@@ -1,5 +1,3 @@
-# COMP472-Assignment3
-
 # COMP472 Naive Bayes baf-of-word (NB_BOW)
 
 GitHub Repository: https://github.com/NoDevicesFound/COMP472-Assignment3
