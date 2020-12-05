@@ -18,4 +18,4 @@ word_collections_counter = collections.Counter()
 for row in train_set_2D_list:
     word_collections_counter.update(row[1].split(" "))
 # a filtered two-dimensional list (list of tuple objects with word and word frequencies)
-original_list = list(word_collections_counter.items())
+original_vocabulary_list = list(word_collections_counter.items())
