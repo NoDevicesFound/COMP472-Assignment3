@@ -12,7 +12,7 @@ train_tweet_id_list = []
 train_text_list = []
 train_q1_label_list = []
 # read train file with utf-8
-train_file = open("data/covid_training.tsv", "r", encoding="utf-8")
+train_file = open("../data/covid_training.tsv", "r", encoding="utf-8")
 train_list = train_file.readlines()
 train_file.close()
 # remove headear row
@@ -31,7 +31,7 @@ tfidf_transformer = TfidfTransformer()
 X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
 
 # read test file with utf-8
-test_file = open("data/covid_test_public.tsv", "r", encoding="utf-8")
+test_file = open("../data/covid_test_public.tsv", "r", encoding="utf-8")
 test_list = test_file.readlines()
 test_file.close()
 # a 2d list of testing sets, where each index should contains array of 3 elements
@@ -54,15 +54,15 @@ X_new_tfidf = tfidf_transformer.transform(X_new_counts)
 predicted = clf.predict(X_new_tfidf)
 
 # Output
-output_trace_file = open("output/trace_NB-BOW-FV.txt", "w")
+output_trace_file = open("../output/trace_NB-BOW-FV.txt", "w")
 # TODO 2.2.2 3. per-class recall (yes-R, no-R)
 for id, predict, result in zip(test_tweet_id_list, predicted, test_q1_label_list):
-    output_trace_file.writelines(id + "  " + predict + "  " + score? + "  " + ("correct" if (predict == result) else "wrong") + "\r")
+    output_trace_file.writelines(id + "  " + predict + "  " + score + "  " + ("correct" if (predict == result) else "wrong") + "\r")
 output_trace_file.close()
 
 # https://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics
 # TODO fix precision_score, recall_score, f1_score
-output_eval_file = open("output/eval_NB-BOW-FV.txt", "w")
+output_eval_file = open("../output/eval_NB-BOW-FV.txt", "w")
 output_eval_file.write(
     metrics.accuracy_score(test_q1_label_list, predicted.tolist()) + "\r" +
     metrics.precision_score(test_q1_label_list, predicted.tolist()) + "\r" +
