@@ -4,6 +4,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 
 # ref: https://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
 
@@ -52,6 +53,30 @@ X_new_counts = count_vect.transform(test_text_list)
 X_new_tfidf = tfidf_transformer.transform(X_new_counts)
 
 predicted = clf.predict(X_new_tfidf)
+
+pred_yes, pred_no, test_yes, test_no = [], [], [], []
+#splitting the values by class for yes and no labels
+for elem in range(0, len(test_q1_label_list)):
+    if predicted[elem] == 'yes':
+        pred_yes.append(predicted[elem])
+        test_yes.append(test_q1_label_list[elem])
+    else:
+        pred_no.append(predicted[elem])
+        test_no.append(test_q1_label_list[elem])
+
+print('{} {} {} {}'.format(len(pred_yes), len(pred_no), len(test_yes), len(test_no)))
+
+print('{} {} {} {}'.format(pred_yes, pred_no, test_yes, test_no))
+
+precision_yes = precision_score(test_yes, pred_yes, pos_label='yes')
+recall_yes = recall_score(test_yes, pred_yes, pos_label='yes')
+f1_yes = f1_score(test_yes, pred_yes, pos_label='yes')
+accuracy_yes = accuracy_score(test_yes, pred_yes)
+
+precision_no = precision_score(test_no, pred_no, pos_label='no')
+reccall_no = recall_score(test_no, pred_no, pos_label='no')
+f1_no = f1_score(test_no, pred_no, pos_label='no')
+
 
 # Output
 output_trace_file = open("../output/trace_NB-BOW-FV.txt", "w")
