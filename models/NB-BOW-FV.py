@@ -64,9 +64,9 @@ for elem in range(0, len(test_q1_label_list)):
         pred_no.append(predicted[elem])
         test_no.append(test_q1_label_list[elem])
 
-print('{} {} {} {}'.format(len(pred_yes), len(pred_no), len(test_yes), len(test_no)))
-
-print('{} {} {} {}'.format(pred_yes, pred_no, test_yes, test_no))
+#calculating score for class and which is more frequent
+best_label = 'yes' if len(pred_yes) > len(pred_no) else 'no'
+best_label_score = ((len(pred_yes)/(len(pred_no)+len(pred_yes)))*100) if best_label == 'yes' else ((len(pred_no)/(len(pred_yes)+len(pred_no)))*100)
 
 precision_yes = precision_score(test_yes, pred_yes, pos_label='yes')
 recall_yes = recall_score(test_yes, pred_yes, pos_label='yes')
@@ -74,7 +74,7 @@ f1_yes = f1_score(test_yes, pred_yes, pos_label='yes')
 accuracy_yes = accuracy_score(test_yes, pred_yes)
 
 precision_no = precision_score(test_no, pred_no, pos_label='no')
-reccall_no = recall_score(test_no, pred_no, pos_label='no')
+recall_no = recall_score(test_no, pred_no, pos_label='no')
 f1_no = f1_score(test_no, pred_no, pos_label='no')
 
 
@@ -82,16 +82,13 @@ f1_no = f1_score(test_no, pred_no, pos_label='no')
 output_trace_file = open("../output/trace_NB-BOW-FV.txt", "w")
 # TODO 2.2.2 3. per-class recall (yes-R, no-R)
 for id, predict, result in zip(test_tweet_id_list, predicted, test_q1_label_list):
-    output_trace_file.writelines(id + "  " + predict + "  " + score + "  " + ("correct" if (predict == result) else "wrong") + "\r")
+    output_trace_file.writelines(('{}  {}  {}  {}  {}\r').format(id, best_label, best_label_score, result,  ("correct" if (predict == result) else "wrong")))
 output_trace_file.close()
 
 # https://scikit-learn.org/stable/modules/classes.html#sklearn-metrics-metrics
 # TODO fix precision_score, recall_score, f1_score
 output_eval_file = open("../output/eval_NB-BOW-FV.txt", "w")
 output_eval_file.write(
-    metrics.accuracy_score(test_q1_label_list, predicted.tolist()) + "\r" +
-    metrics.precision_score(test_q1_label_list, predicted.tolist()) + "\r" +
-    metrics.recall_score(test_q1_label_list, predicted.tolist()) + "\r" +
-    metrics.f1_score(test_q1_label_list, predicted.tolist()) + "\r"
+    ('{}\r{}\r{}  {}\r{}  {}\r{}  {}\r'.format(('Format for per class is yes followed by no.'), accuracy_yes, precision_yes, precision_no, recall_yes, recall_no, f1_yes, f1_no ))
 )
 output_eval_file.close()
