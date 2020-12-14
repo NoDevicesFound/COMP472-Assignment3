@@ -118,7 +118,7 @@ def metrics(y_true, y_pred, y_pred_score, test_dataset):
     
     output_trace_file = open("../output/trace_NB-BOW-FV.txt", "w")
     for id, predict, score, result in zip(test_dataset[:,0], y_pred, y_pred_score, test_dataset[:,2]):
-        output_trace_file.writelines(('{}  {}  {}  {}  {}\r').format(id, predict, score, result,  ("correct" if (predict == result) else "wrong")))
+        output_trace_file.writelines(('{}  {}  {:.2e}  {}  {}\r').format(id, predict, score, result,  ("correct" if (predict == result) else "wrong")))
     output_trace_file.close()
     
     output_eval_file = open("../output/eval_NB-BOW-FV.txt", "w")
