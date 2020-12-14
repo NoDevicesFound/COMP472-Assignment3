@@ -19,6 +19,7 @@ def word_tokenization(text):
         for c in range(column):
             # tuple containing feature name and frequency
             features_text[r][c] = (tokenized_names[c], tokenized_text[r][c])
+            
     return features_text
 
 def prior_probabilities(q1_label):
@@ -83,23 +84,26 @@ def trim_vocabulary(conditionals, text):
 def class_prediction(yes, no, conditionals, text, matches): 
     text_row = text.shape[0]
     prediction = []
+    scores = []
     
     for tr in range(text_row):
-        score_yes, score_no = math.log(yes, 10), math.log(no, 10)
+        score_yes, score_no = math.log10(yes), math.log10(no)
         for i in range(len(matches)):
             text_index = matches[i][0]
             conditional_index = matches[i][1]
             if (text[tr][text_index][1] > 0):
-                score_yes = score_yes + math.log(conditionals[0][conditional_index][1], 10)
-                score_no = score_no + math.log(conditionals[1][conditional_index][1], 10)
+                score_yes = score_yes + math.log10(conditionals[0][conditional_index][1])
+                score_no = score_no + math.log10(conditionals[1][conditional_index][1])
         if (score_yes > score_no):
             prediction.append("yes")
+            scores.append(score_yes)
         else:
             prediction.append("no")
+            scores.append(score_no)
     
-    return prediction
+    return prediction, scores
 
-def metrics(y_true, y_pred):
+def metrics(y_true, y_pred, y_pred_score, test_dataset):
     precision_no = precision_score(y_true, y_pred, pos_label="no")
     precision_yes = precision_score(y_true, y_pred, pos_label="yes")
     recall_no = recall_score(y_true, y_pred, pos_label="no")
@@ -111,6 +115,18 @@ def metrics(y_true, y_pred):
     
     print(classification_report(y_true, y_pred))
     print(confusion_matrix(y_true, y_pred))
+    
+    output_trace_file = open("../output/trace_NB-BOW-OV.txt", "w")
+    for id, predict, score, result in zip(test_dataset[:,0], y_pred, y_pred_score, test_dataset[:,2]):
+        output_trace_file.writelines(('{}  {}  {}  {}  {}\r').format(id, predict, score, result,  ("correct" if (predict == result) else "wrong")))
+    output_trace_file.close()
+    
+    output_eval_file = open("../output/eval_NB-BOW-OV.txt", "w")
+    output_eval_file.write("Accuracy_score: " + accuracy.astype(str))
+    output_eval_file.write("\nprecision_score yes: " + precision_yes.astype(str) + "\tprecision_score no: " + precision_no.astype(str))
+    output_eval_file.write("\nrecall_score yes: " + recall_yes.astype(str) + "\trecall_score no: " + recall_no.astype(str))
+    output_eval_file.write("\nf1_score yes: " + f1_yes.astype(str) + "\tf1_score no: " + f1_no.astype(str))
+    output_eval_file.close()
 
 def data_processing(training_file, testing_file, SMOOTHING):
     # training: hypothesis and evidence
@@ -135,9 +151,10 @@ def data_processing(training_file, testing_file, SMOOTHING):
     matches = trim_vocabulary(conditionals, test_text)
     
     # prediction
-    prediction = class_prediction(yes, no, conditionals, test_text, matches)
+    prediction, scores = class_prediction(yes, no, conditionals, test_text, matches)
     
-    metrics(test_q1_label, prediction)
+    metrics(test_q1_label, prediction, scores, test_dataset)
+    print(scores)
 
 # processing datasets
 training = '../data/covid_training.tsv'
