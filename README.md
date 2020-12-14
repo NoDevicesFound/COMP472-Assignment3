@@ -24,6 +24,8 @@ This assignment was a collaborative effort. Each part was worked on together, co
 In order to run the code, the following python packages need to be installed:
 * numpy
 * warnings
+* pandas
+* matplotlib
 
 In order to install packages, pip is the preferred installer: https://www.liquidweb.com/kb/install-pip-windows/
 
