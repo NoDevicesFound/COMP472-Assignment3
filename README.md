@@ -10,17 +10,13 @@ Khang Zheng Ng, 27879709 </br>
 
 ## Distribution of tasks
 
-Khang Zheng Ng: </br>
-Michael Naccache: </br>
-Amina Isse: </br>
-</br>
-Everyone: Distribution of instances and presentation slides </br>
+This assignment was a collaborative effort. Each part was worked on together, considering that it was all interdependent. </br>
 
 ## Explanation of the folders
 
-* 
-* 
-* 
+* Data: Contains the initial training and testing set
+* Models: Contains each model, in a .py format and an .ipynb format
+* Output: Contains the trace and evaluation of every model.
 
 
 ## Instructions on how to run the code
