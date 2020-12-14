@@ -1,4 +1,4 @@
-Accuracy_score: 0.7777777777777778
-precision_score yes: 0.7692307692307693	precision_score no: 0.8
-recall_score yes: 0.9090909090909091	recall_score no: 0.5714285714285714
-f1_score yes: 0.8333333333333333	f1_score no: 0.6666666666666666
+Accuracy_score: 0.7778
+precision_score yes: 0.7692	precision_score no: 0.8000
+recall_score yes: 0.9091	recall_score no: 0.5714
+f1_score yes: 0.8333	f1_score no: 0.6667

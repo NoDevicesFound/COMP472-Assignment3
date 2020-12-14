@@ -122,10 +122,10 @@ def metrics(y_true, y_pred, y_pred_score, test_dataset):
     output_trace_file.close()
     
     output_eval_file = open("../output/eval_NB-BOW-OV.txt", "w")
-    output_eval_file.write("Accuracy_score: " + accuracy.astype(str))
-    output_eval_file.write("\nprecision_score yes: " + precision_yes.astype(str) + "\tprecision_score no: " + precision_no.astype(str))
-    output_eval_file.write("\nrecall_score yes: " + recall_yes.astype(str) + "\trecall_score no: " + recall_no.astype(str))
-    output_eval_file.write("\nf1_score yes: " + f1_yes.astype(str) + "\tf1_score no: " + f1_no.astype(str))
+    output_eval_file.write('Accuracy_score: {:.4f}'.format(accuracy))
+    output_eval_file.write('\nprecision_score yes: {:.4f}\tprecision_score no: {:.4f}'.format(precision_yes, precision_no))
+    output_eval_file.write('\nrecall_score yes: {:.4f}\trecall_score no: {:.4f}'.format(recall_yes, recall_no))
+    output_eval_file.write('\nf1_score yes: {:.4f}\tf1_score no: {:.4f}'.format(f1_yes, f1_no))
     output_eval_file.close()
 
 def data_processing(training_file, testing_file, SMOOTHING):
